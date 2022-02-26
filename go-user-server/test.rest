@@ -1,0 +1,68 @@
+@accessToken = Bearer {{user_signIn.response.body.accessToken}}
+@userID = {{users_add.response.body.*~}}
+
+###
+# @name user_check
+
+POST http://localhost:8000/api/user/check
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "ndhu1234"
+}
+
+###
+# @name user_signIn
+
+POST http://localhost:8000/api/user/sign-in
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "99f98b6133eba064018a415a94929f5ab84e3335e50bc04490eb38b4d4001692039d0a2366b91e365e25bc96c02e013b668cfc9645fd427632d8264af6fa89f5"
+}
+
+###
+# @name users_get
+
+GET http://localhost:8000/api/users
+Authorization: {{accessToken}}
+
+###
+# @name users_add
+
+POST http://localhost:8000/api/users
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+[{
+  "username": "test",
+  "password": "99f98b6133eba064018a415a94929f5ab84e3335e50bc04490eb38b4d4001692039d0a2366b91e365e25bc96c02e013b668cfc9645fd427632d8264af6fa89f5",
+  "fullName": "test",
+  "idNumber": "Y999999994",
+  "role": "VS"
+}]
+
+###
+# @name user_get
+
+GET http://localhost:8000/api/users/{{userID}}
+Authorization: {{accessToken}}
+
+###
+# @name user_update
+
+PATCH http://localhost:8000/api/users/{{userID}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "fullName": "test2"
+}
+
+###
+# @name user_delete
+
+DELETE http://localhost:8000/api/users/{{userID}}
+Authorization: {{accessToken}}
