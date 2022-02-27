@@ -21,32 +21,31 @@
         </span>
         <span>Info</span>
     </div>
-    <div class="table-wrapper-scroll-x my-custom-scrollbar">
+    <div class="table-wrapper-scroll-x my-custom-scrollbar" style="height: auto;">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">username</th>
-                    <th scope="col">password</th>
-                    <th scope="col">full name</th>
                     <th scope="col">id number</th>
+                    <th scope="col">full name</th>
                     <th scope="col">role</th>
+                    <th scope="col">email</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th>1</th>
-                    <td>head_nurse</td>
-                    <td>password</td>
-                    <td>Head Nurse</td>
-                    <td>A123456789</td>
-                    <td>head nurse</td>
-                </tr>
+                <tr v-for="(user) in users" :key="user.idNumber">
+                    <td>{{user.username}}</td>
+                    <td>{{user.idNumber}}</td>
+                    <td>{{user.fullName}}</td>
+                    <td>{{user.role}}</td>
+                    <td>{{user.email}}</td>
+                </tr >
             </tbody>
         </table>
     </div>
     <div>
         total users
+        {{users ? Object.keys(users).length : 0}}
     </div>
 </template>
 
@@ -62,10 +61,18 @@ display: block;
 </style>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs, toRef } from 'vue';
 
 export default defineComponent({
     name: 'CollectionMain',
-    setup() {}
+    props: ['users'],
+    setup(props) {
+        // const displayData = toRefs(props)
+        // const dsiplayData = toRef(props, 'usersData');
+        // console.log(dsiplayData);
+        // return {
+        //     dsiplayData
+        // }
+    }
 })
 </script >

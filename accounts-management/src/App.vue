@@ -5,7 +5,7 @@
         <RouterLink to="/">Home</RouterLink>
       </nav>
     </div>
-  </header  >
+  </header>
   <RouterView></RouterView>
 </template>
 
