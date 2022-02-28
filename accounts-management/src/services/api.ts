@@ -14,6 +14,14 @@ interface createUserData {
     role: string
 }
 
+interface updateUserData {
+    username?: string,
+    password?: string,
+    fullName?: string,
+    idNumber?: string,
+    role?: string
+}
+
 const accessToken :string = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDYyMTc2OTMsImp0aSI6ImQwZjZkNTM0LWVlYTUtNGE4OS1iYzBmLTU0ZWRjMmNlZjRhMSIsImlhdCI6MTY0NTYxMjg5Mywic3ViIjoiNWU3ZjgyZWEtOTllYS00NDQwLWFmNTItYzQ4NTRjZGMwM2EwIn0.5J8V7d3MPxcXj0AcOEBh7K9wnVy4_4fVfHpLKuqQCUk"
 
 
@@ -30,10 +38,12 @@ export const signInAPI = async (obj : SignInData) => {
       console.log(response);
 }
 
-export const getUsersAPI = async () => {
+export const getUsersAPI = async (id :string) => {
+    const url = (id || '').length > 0 ? usersURL + `/${id}` : usersURL;
+    console.log(url)
     const config : AxiosRequestConfig = {
         method: 'get',
-        url: usersURL,
+        url: url,
         headers: {
             "Content-Type": "application/json",
             "Authorization": accessToken
@@ -67,7 +77,7 @@ export const createUsersAPI = async (data :createUserData) => {
     return response;
 }
 
-export const updateUsersAPI = async (data :createUserData, id :string) => {
+export const updateUserAPI = async (data :updateUserData, id :string) => {
     const config : AxiosRequestConfig = {
         method: 'patch',
         url: usersURL + `/${id}`,
@@ -86,7 +96,7 @@ export const updateUsersAPI = async (data :createUserData, id :string) => {
     return response;
 }
 
-export const deleteUsersAPI = async (id :string) => {
+export const deleteUserAPI = async (id :string) => {
     const config : AxiosRequestConfig = {
         method: 'delete',
         url: usersURL + `/${id}`,

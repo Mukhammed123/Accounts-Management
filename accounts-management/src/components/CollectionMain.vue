@@ -33,12 +33,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(user) in users" :key="user.idNumber">
-                    <td>{{user.username}}</td>
+                <tr v-for="(user, userId) in users" :key="user.idNumber">
+                    <td><RouterLink :to="`/user-detail/${userId}`" :user="user">{{user.username}}</RouterLink ></td >
                     <td>{{user.idNumber}}</td>
                     <td>{{user.fullName}}</td>
                     <td>{{user.role}}</td>
                     <td>{{user.email}}</td>
+
                 </tr >
             </tbody>
         </table>
@@ -62,6 +63,7 @@ display: block;
 
 <script lang="ts">
 import { defineComponent, toRefs, toRef } from 'vue';
+import { RouterLink } from 'vue-router';
 
 export default defineComponent({
     name: 'CollectionMain',

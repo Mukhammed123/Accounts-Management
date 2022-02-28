@@ -22,9 +22,9 @@ const router = createRouter({
       component: UserOperations
     },
     {
-      path: '/update-user',
-      name: 'update-user',
-      component: UserOperations
+      path: '/user-detail/:id',
+      name: 'user-detail',
+      component: UserOperations,
     },
     {
       path: '/login',
