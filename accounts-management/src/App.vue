@@ -2,7 +2,7 @@
   <header class="p-2" style="background-color: #056b80;">
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
+        
       </nav>
     </div>
   </header>

@@ -1,6 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import SignInPage from '../views/SignInPage.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import SignInPage from '../views/SignInPage.vue';
+import UserOperations from '../views/UserOperations.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,16 @@ const router = createRouter({
       path: '/accounts-list',
       name: 'accounts-list',
       component: HomeView
+    },
+    {
+      path: '/add-user',
+      name: 'add-user',
+      component: UserOperations
+    },
+    {
+      path: '/update-user',
+      name: 'update-user',
+      component: UserOperations
     },
     {
       path: '/login',

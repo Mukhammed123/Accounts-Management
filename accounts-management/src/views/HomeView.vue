@@ -10,8 +10,8 @@
         Loading...
       </div >
       </div >
-      <div class="col">
-        <button>+ Add User</button>
+      <div class="col d-flex justify-content-end">
+        <RouterLink to="/add-user">+ Add User</RouterLink>
       </div>
     </div>
   </main  >
