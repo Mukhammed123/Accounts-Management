@@ -20,9 +20,9 @@
 import { defineComponent } from 'vue';
 import { RouterLink } from 'vue-router';
 export default defineComponent({
-    name: 'CollectionTitle',
-    setup() {
-        console.log("Hello from Collection Title")
-    }
+  name: 'CollectionTitle',
+  setup() {
+    console.log('Hello from Collection Title');
+  }
 }); 
 </script >

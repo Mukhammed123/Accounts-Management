@@ -1,17 +1,15 @@
+
 <template>
     <div class="collection-main-title py-3 pr-3 pl-0" style="font-size: 1.5rem;">
         Users
     </div>
-    <div class="input-group input-group-sm mb-3 p-2" style="background-color: #eaf2fa;">
-        <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary" type="button">Search</button>
-        </div>
+    <div class="mb-3 p-2" style="background-color: #eaf2fa;">
+        <input v-model="search" type="text" class="form-control" @input="InputChanging">
     </div>
     <div class="delete-container">
         <span style="margin-right: 1em;">Action:</span >
         <span style="margin-right: 1em;">
-            <select class="custom-select" id="inputGroupSelect01">
+            <select id="inputGroupSelect01" class="custom-select">
             <option selected>Choose...</option>
             <option value="1">Users</option>
         </select>
@@ -33,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(user, userId) in users" :key="user.idNumber">
+                <tr v-for="(user, userId) in displayData" :key="user.idNumber">
                     <td><RouterLink :to="`/user-detail/${userId}`" :user="user">{{user.username}}</RouterLink ></td >
                     <td>{{user.idNumber}}</td>
                     <td>{{user.fullName}}</td>
@@ -46,9 +44,45 @@
     </div>
     <div>
         total users
-        {{users ? Object.keys(users).length : 0}}
+        {{displayData ? Object.keys(displayData).length : 0}}
     </div>
 </template>
+
+<script lang="ts">
+import { defineComponent, ref, toRef, computed } from 'vue';
+
+export default defineComponent({
+  name: 'CollectionMain',
+  props: {
+    users: { type: Object, default: null}
+  },
+  setup(props) {
+    const search = ref('');
+    const data = toRef(props, 'users');
+
+    const displayData = computed(() => {
+      return Object.keys(data.value).reduce((result, currentVal) => {
+        if (Object.keys(data.value[currentVal]).some((userKey) => {
+          return data.value[currentVal][userKey].includes(search.value);
+        }))
+          result[currentVal] = data.value[currentVal];
+        return result;
+      }, {});
+    });
+
+    const InputChanging = () => {
+      console.log(displayData);
+    //   console.log('Inside');
+    };
+
+    return {
+      search,
+      displayData,
+      InputChanging
+    };
+  }
+});
+</script>
 
 <style>
 .my-custom-scrollbar {
@@ -60,21 +94,4 @@ overflow: auto;
 display: block;
 }
 </style>
-
-<script lang="ts">
-import { defineComponent, toRefs, toRef } from 'vue';
-import { RouterLink } from 'vue-router';
-
-export default defineComponent({
-    name: 'CollectionMain',
-    props: ['users'],
-    setup(props) {
-        // const displayData = toRefs(props)
-        // const dsiplayData = toRef(props, 'usersData');
-        // console.log(dsiplayData);
-        // return {
-        //     dsiplayData
-        // }
-    }
-})
-</script >
+ 

@@ -11,11 +11,11 @@
               <label for="Login">Login: </label>
             </div>
             <div>
-              <input type="text" class="form-control" v-model="login">
+              <input v-model="login" type="text" class="form-control">
             </div>
             <label for="Password">Password: </label>
             <br>
-            <input type="password" class="form-control" v-model="password">
+            <input v-model="password" type="password" class="form-control">
           </form>
         </div>
         <div class="modal-footer d-flex justify-content-center">
@@ -29,11 +29,21 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { signInAPI } from '@/services/api';
+import {useStore} from '@/store/useStore';
+
 const login = ref(null);
 const password = ref(null);
+const router = useRouter();
 const myEvent = async () => {
-  signInAPI({username: login.value, password: password.value});
-
-}
+  const store = useStore();
+  const signInRes = await signInAPI({username: login.value, password: password.value});
+  if(signInRes.status < 300 && signInRes.status >= 200) {
+    localStorage.setItem('accessToken', signInRes.data.accessToken);
+    store.saveAccessToken(signInRes.data.accessToken);
+    router.push({path: '/accounts-list'});
+  }
+}; 
 
 </script >

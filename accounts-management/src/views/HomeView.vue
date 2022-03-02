@@ -11,7 +11,7 @@
       </div >
       </div >
       <div class="col d-flex justify-content-end">
-        <RouterLink to="/add-user">+ Add User</RouterLink>
+        <span><RouterLink to="/add-user">+ Add User</RouterLink></span>
       </div>
     </div>
   </main  >
@@ -35,10 +35,10 @@ export default {
     onMounted(async () => {
       const res = await getUsersAPI();
       usersData.value = res.data;
-      console.log(usersData)
+      console.log(usersData);
     });
     return {usersData};
   }
-}
+};
 </script>
 
