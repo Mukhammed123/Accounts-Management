@@ -8,7 +8,7 @@
         <li class="list-group-item d-flex justify-content-between px-1">
             <div>Users</div >
             <div>
-                <RouterLink to="/add-user">+ Add User</RouterLink>
+                <router-link to="/add-user">+ Add User</router-link >
             </div >
         </li >
         </ul>
@@ -18,11 +18,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { RouterLink } from 'vue-router';
 export default defineComponent({
   name: 'CollectionTitle',
   setup() {
-    console.log('Hello from Collection Title');
+    return {};
   }
 }); 
 </script >

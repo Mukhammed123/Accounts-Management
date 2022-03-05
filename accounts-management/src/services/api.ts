@@ -44,9 +44,7 @@ export const signInAPI = async (obj : SignInData) => {
 
 export const getUsersAPI = async (id :string) => {
   const store = useStore();
-  console.log(store)
   const url = (id || '').length > 0 ? usersURL + `/${id}` : usersURL;
-  console.log(url);
   const config : AxiosRequestConfig = {
     method: 'get',
     url: url,
@@ -71,7 +69,7 @@ export const createUsersAPI = async (data :createUserData) => {
     url: usersURL,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + store.state.accessToken
+      'Authorization': 'Bearer ' + store.accessToken
     },
     data: [data]
   };
@@ -91,7 +89,7 @@ export const updateUserAPI = async (data :updateUserData, id :string) => {
     url: usersURL + `/${id}`,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + store.state.accessToken
+      'Authorization': 'Bearer ' + store.accessToken
     },
     data: data
   };
@@ -111,7 +109,7 @@ export const deleteUserAPI = async (id :string) => {
     url: usersURL + `/${id}`,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + store.state.accessToken
+      'Authorization': 'Bearer ' + store.accessToken
     },
   };
   let response :AxiosResponse;

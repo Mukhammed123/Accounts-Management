@@ -1,20 +1,20 @@
 <template>
-    <div class="crud-operation-container">
-        <div class="row px-3" style="height: 100%;">
-            <div class="col">
-                <CollectionTitle />
+    <div class="crud-operation-container" style="height: 100%;">
+        <div class="row px-3 d-flex justify-content-between">
+            <div class="col-3">
+                <collection-title />
             </div>
-            <div class="col-7">
+            <div class="col-9">
                 <div class="title">User</div>
                 <div class="row">
                     <label for="username">Username: </label>
-                    <input  v-model="username" type="text">
+                    <input  v-model="username" :readonly="route.path !== '/add-user'" type="text">
                 </div>
                 <div class="row">
                     <label for="Id Number:">Id Number: </label>
-                    <input v-model="idNumber" type="text">
+                    <input v-model="idNumber" :readonly="route.path !== '/add-user'" type="text">
                 </div>
-                <div class="row">
+                <div v-if="route.path === '/add-user'" class="row">
                     <label for="Password:">Password: </label>
                     <input v-model="password" type="password">
                 </div>
@@ -52,9 +52,13 @@
                     </div>
                 </div>
             </div>
-            <button v-if="currentPath !== '/add-user'" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button >
-            <button v-else @click="createUser">Create</button  >
-            <button v-if="currentPath !== '/add-user'" @click="updateUser">Update</button >
+        </div>
+        <div  v-if="currentPath !== '/add-user'" class="d-flex justify-content-between mt-3 px-3">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button >
+            <button type="button" class="btn btn-warning" @click="updateUser">Update</button >
+        </div>
+        <div v-else class="d-flex justify-content-end mt-3 px-3">
+            <button type="button" class="btn text-white" style="background-color: #056b80;" @click="createUser">Create</button  >
         </div>
     </div>
 </template>
@@ -69,7 +73,8 @@ import router from '@/router';
 export default {
   name: 'UserOperations',
   components: {CollectionTitle},
-  setup() {
+  emits: ['show-message'],
+  setup(props, context) {
     const route = useRoute();
     const currentPath = route.path;
     const username = ref('');
@@ -81,10 +86,10 @@ export default {
 
     let getResponse;
     onMounted( () => {
-      getUsers();
+      getUser();
     });
 
-    const getUsers = async () => {
+    const getUser = async () => {
       if((route.params.id || '').length > 0) {
         getResponse = await getUsersAPI(route.params.id);
         if(getResponse.status === 200) {
@@ -110,8 +115,16 @@ export default {
       console.log(response);
 
       if(response.status < 300 && response.status >= 200) {
-        console.log('passed create if');
+        context.emit('show-message', {
+          message: `Successfully created user ${username.value}!`,
+          type: 'success'
+        });
         router.push({path: '/accounts-list'});
+      } else {
+        context.emit('show-message', {
+          message: `Failed to create user ${username.value}! Status code is ${response.status}`,
+          type: 'danger'
+        });
       }
     };
 
@@ -129,7 +142,16 @@ export default {
       );
       console.log(response);
       if(response.status < 300 && response.status >= 200) {
-        getUsers();
+        context.emit('show-message', {
+          message: `Successfully updated user ${username.value}!`,
+          type: 'success'
+        });
+        getUser();
+      } else {
+        context.emit('show-message', {
+          message: `Failed to update user ${username.value}! Status code is ${response.status}`,
+          type: 'danger'
+        });
       }
     };
 
@@ -137,10 +159,17 @@ export default {
       const response = await deleteUserAPI(
         route.params.id
       );
-      console.log(response);
       if(response.status < 300 && response.status >= 200) {
-        console.log('Passed delete If');
+        context.emit('show-message', {
+          message: `Successfully deleted user ${username.value}!`,
+          type: 'success'
+        });
         router.push({path: '/accounts-list'});
+      } else {
+        context.emit('show-message', {
+          message: `Failed to delete user ${username.value}! Status code is ${response.status}`,
+          type: 'danger'
+        });
       }
     };
 
@@ -152,6 +181,7 @@ export default {
       email,
       fullName,
       currentPath,
+      route,
       createUser,
       updateUser,
       deleteUser,

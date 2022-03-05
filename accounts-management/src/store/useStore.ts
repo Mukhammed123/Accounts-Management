@@ -3,12 +3,15 @@ import { defineStore } from 'pinia';
 export const useStore = defineStore('store', {
   state: () => ({
     accessToken: '',
+    username: '',
   }),
-  getters: {},
   actions: {
     reset() {},
-    saveAccessToken(accToken :string) {
+    saveAccessToken(accToken: string) {
       this.accessToken = accToken;
+    },
+    saveUsername(name: string) {
+      this.username = name;
     }
   }
 });

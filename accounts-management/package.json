@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@napi-rs/blake-hash": "^1.3.1",
     "axios": "^0.26.0",
     "bootstrap-icons": "^1.8.1",
     "node": "^17.4.0",

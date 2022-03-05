@@ -4,7 +4,7 @@
         Users
     </div>
     <div class="mb-3 p-2" style="background-color: #eaf2fa;">
-        <input v-model="search" type="text" class="form-control" @input="InputChanging">
+        <input v-model="search" type="text" class="form-control">
     </div>
     <div class="delete-container">
         <span style="margin-right: 1em;">Action:</span >
@@ -70,15 +70,9 @@ export default defineComponent({
       }, {});
     });
 
-    const InputChanging = () => {
-      console.log(displayData);
-    //   console.log('Inside');
-    };
-
     return {
       search,
-      displayData,
-      InputChanging
+      displayData
     };
   }
 });
