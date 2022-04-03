@@ -25,7 +25,7 @@ interface updateUserData {
 
 
 export const signInAPI = async (obj : SignInData) => {
-  const config : AxiosRequestConfig = {
+  const config = {
     method: 'post',
     url: signInURL,
     data: obj,
@@ -33,7 +33,7 @@ export const signInAPI = async (obj : SignInData) => {
       'Content-Type': 'application/json',
     },
   };
-  let response :AxiosResponse;
+  let response;
   try {
     response = await axios(config);
   } catch(error) {

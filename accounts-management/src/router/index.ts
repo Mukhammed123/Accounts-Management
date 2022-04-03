@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import SignInPage from '../views/SignInPage.vue';
 import UserOperations from '../views/UserOperations.vue';
 
 const router = createRouter({
@@ -9,11 +8,6 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      redirect: '/login'
-    },
-    {
-      path: '/accounts-list',
-      name: 'accounts-list',
       component: HomeView
     },
     {
@@ -25,11 +19,6 @@ const router = createRouter({
       path: '/user-detail/:id',
       name: 'user-detail',
       component: UserOperations,
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: SignInPage
     },
     {
       path: '/about',

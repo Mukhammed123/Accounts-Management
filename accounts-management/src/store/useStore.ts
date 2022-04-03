@@ -4,6 +4,7 @@ export const useStore = defineStore('store', {
   state: () => ({
     accessToken: '',
     username: '',
+    isSignedIn: false,
   }),
   actions: {
     reset() {},
@@ -12,6 +13,9 @@ export const useStore = defineStore('store', {
     },
     saveUsername(name: string) {
       this.username = name;
+    },
+    setIsSignedIn(signedIn: boolean) {
+      this.isSignedIn = signedIn;
     }
   }
 });

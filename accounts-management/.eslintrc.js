@@ -2,14 +2,10 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:vue/vue3-recommended',
-    'prettier'
-  ],
+  extends: ['plugin:vue/recommended', 'eslint:recommended', '@vue/prettier'],
   rules: {
-    indent: ['warn', 2],
-    quotes: ['warn', 'single'],
-    semi: ['warn', 'always'],
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'prettier/prettier': ['warn', { singleQuote: true }],
   },
 };

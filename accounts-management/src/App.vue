@@ -1,34 +1,69 @@
 <template>
-  <header class="p-2" style="background-color: #056b80;">
-    <div class="wrapper">
-      <nav class="d-flex justify-content-between align-items-center">
-        <h2><RouterLink to="/accounts-list" class="text-white text-decoration-none">Accounts Management</RouterLink></h2 >
-        <div class="text-white">
-          {{store.username}}
-          <RouterLink v-if="route.path !== '/login'" to="/login" class="text-white" @click="logout">Logout</RouterLink >
-        </div>
-      </nav>
-    </div>
-  </header>
-  <message-block v-if="messageTrigger" :message="message" :type="type" @remove-message="removeMessage"/>
-  <RouterView :key="route.path" @show-message="showMessage"></RouterView >
+  <div class="app-body">
+    <header class="p-2" style="background-color: #056b80">
+      <div class="wrapper">
+        <nav class="d-flex justify-content-between align-items-center">
+          <h2>
+            <RouterLink to="/" class="text-white text-decoration-none"
+              >Accounts Management</RouterLink
+            >
+          </h2>
+          <div class="text-white">
+            {{ store.username }}
+            <button
+              v-if="route.path !== '/login'"
+              class="btn text-white"
+              @click="logout"
+            >
+              Logout
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <user-operation-toast />
+    <RouterView
+      v-if="store.isSignedIn"
+      :key="route.path"
+      @show-message="showMessage"
+    ></RouterView>
+    <login-dialog />
+  </div>
 </template>
 
 <script lang="ts">
 import { ref } from 'vue';
-import {useStore} from '@/store/useStore';
-import { useRoute, useRouter } from 'vue-router';
-import MessageBlock from './components/MessageBlock.vue';
+import { useStore } from '@/store/useStore';
+import { useRoute } from 'vue-router';
+import LoginDialog from '@/components/dialogs/LoginDialog.vue';
+import UserOperationToast from '@/components/toasts/UserOperationToast.vue';
 
 export default {
   name: 'App',
-  components: { MessageBlock },
+  components: { LoginDialog, UserOperationToast },
   setup() {
     const route = useRoute();
     const store = useStore();
-    const router = useRouter();
-    const accessToken = localStorage.getItem('accessToken');
-    
+    const accessToken = localStorage.getItem('accessToken') || '';
+
+    const logout = () => {
+      console.log('logout is called');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('username');
+      store.saveAccessToken('');
+      store.saveUsername('');
+      store.setIsSignedIn(false);
+    };
+
+    if (accessToken.length === 0) {
+      logout();
+    } else {
+      const username = localStorage.getItem('username');
+      store.saveUsername(username ?? '');
+      store.saveAccessToken(accessToken);
+      store.setIsSignedIn(true);
+    }
+
     const messageTrigger = ref(false);
     const message = ref('');
     const type = ref('danger');
@@ -43,18 +78,6 @@ export default {
       messageTrigger.value = false;
     };
 
-    const logout = () => {
-      localStorage.removeItem('accessToken');
-      store.saveAccessToken('');
-      store.saveUsername('');
-    };
-
-    if((accessToken || '').length === 0) {
-      logout();
-      router.push({path: '/login'});
-    } else {
-      store.saveAccessToken(accessToken);
-    }
     return {
       route,
       message,
@@ -63,15 +86,12 @@ export default {
       store,
       showMessage,
       removeMessage,
-      logout
+      logout,
     };
   },
 };
-
-
 </script>
 
 <style>
 @import '@/assets/base.css';
 </style>
-
