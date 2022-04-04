@@ -116,30 +116,30 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
-import CollectionTitle from "@/components/CollectionTitle.vue";
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import CollectionTitle from '@/components/CollectionTitle.vue';
 import {
   createUsersAPI,
   getUsersAPI,
   updateUserAPI,
   deleteUserAPI,
-} from "@/services/api";
-import router from "@/router";
+} from '@/services/api';
+import router from '@/router';
 
 export default {
-  name: "UserOperations",
+  name: 'UserOperations',
   components: { CollectionTitle },
-  emits: ["show-message"],
+  emits: ['show-message'],
   setup(props, context) {
     const route = useRoute();
     const currentPath = route.path;
-    const username = ref("");
-    const password = ref("");
-    const idNumber = ref("");
-    const role = ref("");
-    const email = ref("");
-    const fullName = ref("");
+    const username = ref('');
+    const password = ref('');
+    const idNumber = ref('');
+    const role = ref('');
+    const email = ref('');
+    const fullName = ref('');
 
     let getResponse;
     onMounted(() => {
@@ -147,7 +147,7 @@ export default {
     });
 
     const getUser = async () => {
-      if ((route.params.id || "").length > 0) {
+      if ((route.params.id || '').length > 0) {
         getResponse = await getUsersAPI(route.params.id);
         if (getResponse.status === 200) {
           username.value = getResponse.data.username;
@@ -170,15 +170,15 @@ export default {
       console.log(response);
 
       if (response.status < 300 && response.status >= 200) {
-        context.emit("show-message", {
+        context.emit('show-message', {
           message: `Successfully created user ${username.value}!`,
-          type: "success",
+          type: 'success',
         });
-        router.push({ path: "/" });
+        router.push({ path: '/' });
       } else {
-        context.emit("show-message", {
+        context.emit('show-message', {
           message: `Failed to create user ${username.value}! Status code is ${response.status}`,
-          type: "danger",
+          type: 'danger',
         });
       }
     };
@@ -194,15 +194,15 @@ export default {
       const response = await updateUserAPI(data, route.params.id);
       console.log(response);
       if (response.status < 300 && response.status >= 200) {
-        context.emit("show-message", {
+        context.emit('show-message', {
           message: `Successfully updated user ${username.value}!`,
-          type: "success",
+          type: 'success',
         });
         getUser();
       } else {
-        context.emit("show-message", {
+        context.emit('show-message', {
           message: `Failed to update user ${username.value}! Status code is ${response.status}`,
-          type: "danger",
+          type: 'danger',
         });
       }
     };
@@ -210,15 +210,15 @@ export default {
     const deleteUser = async () => {
       const response = await deleteUserAPI(route.params.id);
       if (response.status < 300 && response.status >= 200) {
-        context.emit("show-message", {
+        context.emit('show-message', {
           message: `Successfully deleted user ${username.value}!`,
-          type: "success",
+          type: 'success',
         });
-        router.push({ path: "/" });
+        router.push({ path: '/' });
       } else {
-        context.emit("show-message", {
+        context.emit('show-message', {
           message: `Failed to delete user ${username.value}! Status code is ${response.status}`,
-          type: "danger",
+          type: 'danger',
         });
       }
     };

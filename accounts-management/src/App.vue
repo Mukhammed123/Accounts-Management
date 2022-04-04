@@ -21,26 +21,19 @@
         </nav>
       </div>
     </header>
-    <user-operation-toast />
-    <RouterView
-      v-if="store.isSignedIn"
-      :key="route.path"
-      @show-message="showMessage"
-    ></RouterView>
+    <RouterView v-if="store.isSignedIn" :key="route.path"></RouterView>
     <login-dialog />
   </div>
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
 import { useStore } from '@/store/useStore';
 import { useRoute } from 'vue-router';
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
-import UserOperationToast from '@/components/toasts/UserOperationToast.vue';
 
 export default {
   name: 'App',
-  components: { LoginDialog, UserOperationToast },
+  components: { LoginDialog },
   setup() {
     const route = useRoute();
     const store = useStore();
@@ -64,28 +57,9 @@ export default {
       store.setIsSignedIn(true);
     }
 
-    const messageTrigger = ref(false);
-    const message = ref('');
-    const type = ref('danger');
-
-    const showMessage = (obj) => {
-      message.value = obj.message;
-      type.value = obj.type;
-      messageTrigger.value = true;
-    };
-
-    const removeMessage = () => {
-      messageTrigger.value = false;
-    };
-
     return {
       route,
-      message,
-      type,
-      messageTrigger,
       store,
-      showMessage,
-      removeMessage,
       logout,
     };
   },

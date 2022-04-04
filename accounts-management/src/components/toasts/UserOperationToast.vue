@@ -1,38 +1,73 @@
 <template>
-  <div>
-    <h1>hello world</h1>
-    <div
-      class="toast"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-      autohide="false"
-    >
-      <div class="toast-header">
-        <img src="..." class="rounded mr-2" alt="..." />
-        <strong class="mr-auto">Bootstrap</strong>
-        <small>11 mins ago</small>
-        <button
-          type="button"
-          class="ml-2 mb-1 close"
-          data-dismiss="toast"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+  <!-- Then put toasts within -->
+  <div class="d-flex justify-content-center">
+    <div class="position-absolute">
+      <div
+        ref="toastRef"
+        class="toast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div :class="`toast-header bg-${type} text-white`">
+          <strong class="me-auto">Bootstrap</strong>
+          <!-- <small>11 mins ago</small> -->
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="toast-body bg-white">
+          {{ content }}
+        </div>
       </div>
-      <div class="toast-body">Hello, world! This is a toast message.</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref, toRef, watchEffect } from 'vue';
+import { useStore } from '@/store/useStore';
+import { Toast } from 'bootstrap';
 
 export default defineComponent({
   name: 'UserOperationToast',
-  setup() {
+  props: {
+    showMessage: { type: Boolean, default: false },
+    content: { type: String, default: '' },
+    type: { type: String, default: '' },
+  },
+  setup(props) {
     console.log('Toast is created');
+    const store = useStore();
+    const toastRef = ref(null);
+    const showMessage = toRef(props, 'showMessage');
+    onMounted(() => {
+      if (toastRef.value) {
+        const toast = new Toast(toastRef.value);
+
+        watchEffect(() => {
+          if (showMessage.value) toast.show();
+          else toast.hide();
+        });
+
+        toastRef.value.addEventListener('hidden.bs.toast', () => {
+          store.setShowToast(false);
+        });
+      }
+    });
+
+    return {
+      toastRef,
+    };
   },
 });
 </script>
+
+<style scoped>
+.toast {
+  z-index: 1;
+}
+</style>

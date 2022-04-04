@@ -1,5 +1,10 @@
 <template>
   <main style="height: 100%">
+    <user-operation-toast
+      :show-message="store.showToast"
+      content="test"
+      type="danger"
+    />
     <div class="row px-3" style="height: 100%">
       <div class="col-3">
         <CollectionTitle />
@@ -21,20 +26,23 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { getUsersAPI } from '@/services/api.ts';
+import { useStore } from '@/store/useStore';
 import CollectionTitle from '@/components/CollectionTitle.vue';
 import CollectionMain from '@/components/CollectionMain.vue';
+import UserOperationToast from '@/components/toasts/UserOperationToast.vue';
 
 export default {
   name: 'HomeView',
-  components: { CollectionTitle, CollectionMain },
+  components: { CollectionTitle, CollectionMain, UserOperationToast },
   setup() {
     let usersData = ref([]);
+    const store = useStore();
 
     onMounted(async () => {
       const res = await getUsersAPI();
       usersData.value = res.data;
     });
-    return { usersData };
+    return { usersData, store };
   },
 };
 </script>
