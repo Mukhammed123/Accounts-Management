@@ -1,10 +1,14 @@
 <template>
+  <loading-circle v-if="showLoading" />
   <div
+    id="myModal"
     ref="loginRef"
     class="modal fade"
     tabindex="-1"
-    aria-labelledby="exampleModalLabel"
     aria-hidden="true"
+    role="dialog"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="width: 400px">
@@ -49,15 +53,19 @@ import { ref, onMounted, watchEffect } from 'vue';
 import { Modal } from 'bootstrap';
 import { signInAPI } from '@/services/api';
 import { useStore } from '@/store/useStore';
+import LoadingCircle from '../minors/LoadingCircle.vue';
 
 export default {
   name: 'LoginDialog',
-  setup() {
+  components: { LoadingCircle },
+  emits: ['show-message'],
+  setup(props, context) {
     const store = useStore();
     const loginRef = ref(null);
     const login = ref(null);
     const password = ref(null);
-    let loginModal: Modal;
+    const showLoading = ref(false);
+    let loginModal;
 
     onMounted(() => {
       loginModal = new Modal(loginRef.value);
@@ -71,6 +79,7 @@ export default {
     });
 
     const submit = async () => {
+      showLoading.value = true;
       const store = useStore();
       const signInRes = await signInAPI({
         username: login.value ?? '',
@@ -86,7 +95,13 @@ export default {
         if (loginRef.value) {
           loginModal.hide();
         }
+      } else {
+        context.emit('show-message', {
+          content: `Failed to sign in! Status code is ${signInRes.status}`,
+          type: 'danger',
+        });
       }
+      showLoading.value = false;
     };
 
     return {
@@ -95,6 +110,7 @@ export default {
       loginRef,
       submit,
       store,
+      showLoading,
     };
   },
 };

@@ -1,5 +1,6 @@
 <template>
   <div class="crud-operation-container" style="height: 100%">
+    <loading-circle v-if="showLoading" />
     <div class="row px-3 d-flex justify-content-between">
       <div class="col-3">
         <collection-title />
@@ -125,16 +126,15 @@ import {
   updateUserAPI,
   deleteUserAPI,
 } from '@/services/api';
-import { useStore } from '@/store/useStore';
 import router from '@/router';
+import LoadingCircle from '@/components/minors/LoadingCircle.vue';
 
 export default {
   name: 'UserOperations',
-  components: { CollectionTitle },
+  components: { CollectionTitle, LoadingCircle },
   props: {},
   emits: ['show-message'],
   setup(_, context) {
-    const store = useStore();
     const route = useRoute();
     const currentPath = route.path;
     const username = ref('');
@@ -143,6 +143,7 @@ export default {
     const role = ref('');
     const email = ref('');
     const fullName = ref('');
+    const showLoading = ref(false);
 
     let getResponse;
     onMounted(() => {
@@ -151,6 +152,7 @@ export default {
 
     const getUser = async () => {
       if ((route.params.id || '').length > 0) {
+        showLoading.value = true;
         getResponse = await getUsersAPI(route.params.id);
         if (getResponse.status === 200) {
           username.value = getResponse.data.username;
@@ -159,10 +161,12 @@ export default {
           email.value = getResponse.data.email;
           fullName.value = getResponse.data.fullName;
         }
+        showLoading.value = false;
       }
     };
 
     const createUser = async () => {
+      showLoading.value = true;
       const response = await createUsersAPI({
         username: username.value,
         password: password.value,
@@ -170,7 +174,6 @@ export default {
         idNumber: idNumber.value,
         role: role.value,
       });
-      console.log(response);
 
       if (response.status < 300 && response.status >= 200) {
         context.emit('show-message', {
@@ -184,6 +187,7 @@ export default {
           type: 'danger',
         });
       }
+      showLoading.value = false;
     };
 
     const updateUser = async () => {
@@ -193,9 +197,8 @@ export default {
         idNumber: idNumber.value,
         role: role.value,
       };
-      console.log(data);
+      showLoading.value = true;
       const response = await updateUserAPI(data, route.params.id);
-      console.log(response);
       if (response.status < 300 && response.status >= 200) {
         context.emit('show-message', {
           content: `Successfully updated user ${username.value}!`,
@@ -208,9 +211,11 @@ export default {
           type: 'danger',
         });
       }
+      showLoading.value = false;
     };
 
     const deleteUser = async () => {
+      showLoading.value = true;
       const response = await deleteUserAPI(route.params.id);
       if (response.status < 300 && response.status >= 200) {
         context.emit('show-message', {
@@ -224,6 +229,7 @@ export default {
           type: 'danger',
         });
       }
+      showLoading.value = false;
     };
 
     return {
@@ -235,6 +241,7 @@ export default {
       fullName,
       currentPath,
       route,
+      showLoading,
       createUser,
       updateUser,
       deleteUser,

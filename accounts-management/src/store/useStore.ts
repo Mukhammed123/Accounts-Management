@@ -5,9 +5,6 @@ export const useStore = defineStore('store', {
     accessToken: '',
     username: '',
     isSignedIn: false,
-    showToast: true,
-    toastContent: '',
-    toastType: '',
   }),
   actions: {
     reset() {},
@@ -19,15 +16,6 @@ export const useStore = defineStore('store', {
     },
     setIsSignedIn(signedIn: boolean) {
       this.isSignedIn = signedIn;
-    },
-    setShowToast(showToast: boolean) {
-      this.showToast = showToast;
-    },
-    setToastContent(toastContent: string) {
-      this.toastContent = toastContent;
-    },
-    setToastType(toastType: string) {
-      this.toastType = toastType;
     },
   }
 });

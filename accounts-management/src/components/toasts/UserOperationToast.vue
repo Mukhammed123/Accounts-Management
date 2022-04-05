@@ -10,7 +10,9 @@
         aria-atomic="true"
       >
         <div :class="`toast-header bg-${type} text-white`">
-          <strong class="me-auto">Bootstrap</strong>
+          <strong class="me-auto">{{
+            type === 'success' ? 'Success' : 'Error'
+          }}</strong>
           <!-- <small>11 mins ago</small> -->
           <button
             type="button"
@@ -66,6 +68,6 @@ export default defineComponent({
 
 <style scoped>
 .toast {
-  z-index: 1;
+  z-index: 1057;
 }
 </style>

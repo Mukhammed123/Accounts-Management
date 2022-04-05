@@ -9,7 +9,7 @@
           v-if="Object.keys(usersData).length > 0"
           :users="usersData"
         />
-        <div v-else class="col-6">Loading...</div>
+        <loading-circle />
       </div>
       <!-- <div class="col d-flex justify-content-end">
         <span><RouterLink to="/add-user">+ Add User</RouterLink></span>
@@ -24,10 +24,11 @@ import { getUsersAPI } from '@/services/api.ts';
 import { useStore } from '@/store/useStore';
 import CollectionTitle from '@/components/CollectionTitle.vue';
 import CollectionMain from '@/components/CollectionMain.vue';
+import LoadingCircle from '@/components/minors/LoadingCircle.vue';
 
 export default {
   name: 'HomeView',
-  components: { CollectionTitle, CollectionMain },
+  components: { CollectionTitle, CollectionMain, LoadingCircle },
   setup() {
     let usersData = ref([]);
     const store = useStore();

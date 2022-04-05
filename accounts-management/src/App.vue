@@ -1,5 +1,5 @@
 <template>
-  <div class="app-body">
+  <div class="app-body" style="width: 100%; height: 100%">
     <header class="p-2" style="background-color: #056b80">
       <div class="wrapper">
         <nav class="d-flex justify-content-between align-items-center">
@@ -32,7 +32,7 @@
       :key="route.path"
       @show-message="showMessageFunc"
     ></RouterView>
-    <login-dialog />
+    <login-dialog @show-message="showMessageFunc" />
   </div>
 </template>
 
