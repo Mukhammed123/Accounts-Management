@@ -42,7 +42,7 @@ export const signInAPI = async (obj : SignInData) => {
   return response;
 };
 
-export const getUsersAPI = async (id :string) => {
+export const getUsersAPI = async (id :string | null) => {
   const store = useStore();
   const url = (id || '').length > 0 ? usersURL + `/${id}` : usersURL;
   const config : AxiosRequestConfig = {

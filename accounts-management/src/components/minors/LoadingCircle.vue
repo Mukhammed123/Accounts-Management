@@ -1,11 +1,7 @@
 <template>
   <div class="overlay d-flex justify-content-center align-items-center">
     <div class="">
-      <div
-        class="spinner-border text-light"
-        role="status"
-        style="width: 3rem; height: 3rem; z-index: 20; opacity: 1"
-      ></div>
+      <div class="spinner-border text-light" role="status"></div>
     </div>
   </div>
 </template>
@@ -20,6 +16,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  z-index: 20;
+  opacity: 1;
+}
 .overlay {
   position: fixed;
   width: 100%;

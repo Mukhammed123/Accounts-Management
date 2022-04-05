@@ -68,14 +68,16 @@ export default {
     let loginModal;
 
     onMounted(() => {
-      loginModal = new Modal(loginRef.value);
-      watchEffect(() => {
-        if (!store.isSignedIn) {
-          login.value = null;
-          password.value = null;
-          loginModal.show();
-        } else loginModal.hide();
-      });
+      if (loginRef.value) {
+        loginModal = new Modal(loginRef.value);
+        watchEffect(() => {
+          if (!store.isSignedIn) {
+            login.value = null;
+            password.value = null;
+            loginModal.show();
+          } else loginModal.hide();
+        });
+      }
     });
 
     const submit = async () => {
