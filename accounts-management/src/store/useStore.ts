@@ -6,6 +6,8 @@ export const useStore = defineStore('store', {
     username: '',
     isSignedIn: false,
     showToast: true,
+    toastContent: '',
+    toastType: '',
   }),
   actions: {
     reset() {},
@@ -20,6 +22,12 @@ export const useStore = defineStore('store', {
     },
     setShowToast(showToast: boolean) {
       this.showToast = showToast;
+    },
+    setToastContent(toastContent: string) {
+      this.toastContent = toastContent;
+    },
+    setToastType(toastType: string) {
+      this.toastType = toastType;
     },
   }
 });

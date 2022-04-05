@@ -20,21 +20,36 @@
           </div>
         </nav>
       </div>
+      <user-operation-toast
+        :show-message="showMessage"
+        :content="toastContent"
+        :type="toastType"
+        @close="closeToast"
+      />
     </header>
-    <RouterView v-if="store.isSignedIn" :key="route.path"></RouterView>
+    <RouterView
+      v-if="store.isSignedIn"
+      :key="route.path"
+      @show-message="showMessageFunc"
+    ></RouterView>
     <login-dialog />
   </div>
 </template>
 
 <script lang="ts">
+import { ref } from 'vue';
 import { useStore } from '@/store/useStore';
 import { useRoute } from 'vue-router';
 import LoginDialog from '@/components/dialogs/LoginDialog.vue';
+import UserOperationToast from '@/components/toasts/UserOperationToast.vue';
 
 export default {
   name: 'App',
-  components: { LoginDialog },
+  components: { LoginDialog, UserOperationToast },
   setup() {
+    const showMessage = ref(false);
+    const toastType = ref(null);
+    const toastContent = ref(null);
     const route = useRoute();
     const store = useStore();
     const accessToken = localStorage.getItem('accessToken') || '';
@@ -57,10 +72,27 @@ export default {
       store.setIsSignedIn(true);
     }
 
+    const showMessageFunc = (obj) => {
+      showMessage.value = true;
+      toastType.value = obj.type;
+      toastContent.value = obj.content;
+    };
+
+    const closeToast = () => {
+      showMessage.value = false;
+      toastType.value = null;
+      toastContent.value = null;
+    };
+
     return {
       route,
       store,
+      showMessage,
+      toastType,
+      toastContent,
       logout,
+      closeToast,
+      showMessageFunc,
     };
   },
 };

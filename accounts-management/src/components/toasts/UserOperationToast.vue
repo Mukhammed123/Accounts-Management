@@ -29,7 +29,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, toRef, watchEffect } from 'vue';
-import { useStore } from '@/store/useStore';
 import { Toast } from 'bootstrap';
 
 export default defineComponent({
@@ -39,9 +38,8 @@ export default defineComponent({
     content: { type: String, default: '' },
     type: { type: String, default: '' },
   },
-  setup(props) {
+  setup(props, context) {
     console.log('Toast is created');
-    const store = useStore();
     const toastRef = ref(null);
     const showMessage = toRef(props, 'showMessage');
     onMounted(() => {
@@ -51,10 +49,10 @@ export default defineComponent({
         watchEffect(() => {
           if (showMessage.value) toast.show();
           else toast.hide();
-        });
 
-        toastRef.value.addEventListener('hidden.bs.toast', () => {
-          store.setShowToast(false);
+          toastRef.value.addEventListener('hidden.bs.toast', () => {
+            context.emit('close');
+          });
         });
       }
     });

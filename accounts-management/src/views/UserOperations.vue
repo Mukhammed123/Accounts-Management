@@ -125,13 +125,16 @@ import {
   updateUserAPI,
   deleteUserAPI,
 } from '@/services/api';
+import { useStore } from '@/store/useStore';
 import router from '@/router';
 
 export default {
   name: 'UserOperations',
   components: { CollectionTitle },
+  props: {},
   emits: ['show-message'],
-  setup(props, context) {
+  setup(_, context) {
+    const store = useStore();
     const route = useRoute();
     const currentPath = route.path;
     const username = ref('');
@@ -171,13 +174,13 @@ export default {
 
       if (response.status < 300 && response.status >= 200) {
         context.emit('show-message', {
-          message: `Successfully created user ${username.value}!`,
+          content: `Successfully created user ${username.value}!`,
           type: 'success',
         });
         router.push({ path: '/' });
       } else {
         context.emit('show-message', {
-          message: `Failed to create user ${username.value}! Status code is ${response.status}`,
+          content: `Failed to create user ${username.value}! Status code is ${response.status}`,
           type: 'danger',
         });
       }
@@ -195,13 +198,13 @@ export default {
       console.log(response);
       if (response.status < 300 && response.status >= 200) {
         context.emit('show-message', {
-          message: `Successfully updated user ${username.value}!`,
+          content: `Successfully updated user ${username.value}!`,
           type: 'success',
         });
         getUser();
       } else {
         context.emit('show-message', {
-          message: `Failed to update user ${username.value}! Status code is ${response.status}`,
+          content: `Failed to update user ${username.value}! Status code is ${response.status}`,
           type: 'danger',
         });
       }
@@ -211,13 +214,13 @@ export default {
       const response = await deleteUserAPI(route.params.id);
       if (response.status < 300 && response.status >= 200) {
         context.emit('show-message', {
-          message: `Successfully deleted user ${username.value}!`,
+          content: `Successfully deleted user ${username.value}!`,
           type: 'success',
         });
         router.push({ path: '/' });
       } else {
         context.emit('show-message', {
-          message: `Failed to delete user ${username.value}! Status code is ${response.status}`,
+          content: `Failed to delete user ${username.value}! Status code is ${response.status}`,
           type: 'danger',
         });
       }

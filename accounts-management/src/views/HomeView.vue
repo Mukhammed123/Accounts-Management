@@ -1,10 +1,5 @@
 <template>
   <main style="height: 100%">
-    <user-operation-toast
-      :show-message="store.showToast"
-      content="test"
-      type="danger"
-    />
     <div class="row px-3" style="height: 100%">
       <div class="col-3">
         <CollectionTitle />
@@ -29,11 +24,10 @@ import { getUsersAPI } from '@/services/api.ts';
 import { useStore } from '@/store/useStore';
 import CollectionTitle from '@/components/CollectionTitle.vue';
 import CollectionMain from '@/components/CollectionMain.vue';
-import UserOperationToast from '@/components/toasts/UserOperationToast.vue';
 
 export default {
   name: 'HomeView',
-  components: { CollectionTitle, CollectionMain, UserOperationToast },
+  components: { CollectionTitle, CollectionMain },
   setup() {
     let usersData = ref([]);
     const store = useStore();
